@@ -1,13 +1,14 @@
-package org.example;
-
+package org.example.Lexer;
+/*
+ * Almacena Error de Reconocimiento (lexico)
+ */
 public class AER {
 
-    ///Atributos - Maneja el numero de linea, token, lexema
     private int lineNumber;
     private String lex;
     private String tipo;
 
-    ///Constructor
+    //Constructor
     public AER(int numLinea, String lexito, String tokensito){
         this.lineNumber = numLinea;
         this.lex = lexito;
@@ -21,7 +22,7 @@ public class AER {
         return "Error{" + reporte + "}";
     }
 
-    ///Getters y setters ----> Por si acaso luego se requieren.
+    //Getters y setters
     public int getLN(){return this.lineNumber;}
 
     public String getLex(){return this.lex;}

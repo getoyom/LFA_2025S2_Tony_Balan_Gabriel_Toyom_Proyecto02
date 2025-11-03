@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Lexer;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 public class Scanner {
     private ArrayList<Token> tokensList;
-    private final ArrayList<AER> errores;
+    private ArrayList<AER> errores;
+
     private int numeroLinea;
 
     public Scanner() {
@@ -29,9 +30,16 @@ public class Scanner {
 
             System.out.printf("Archivo leido exitosamente: %s\n", fileName);
             System.out.printf("Total de tokens reconocidos: %d\n", tokensList.size());
-
+            /*
+             * MOMENTANEO, QUITAR LUEGO
+             *
+             */
             mostrarTokens();
-            mostrarErrores();
+            if (errores.isEmpty()) {
+                System.out.println("No hay errores lexicos registrados.");
+            } else {
+                mostrarErrores();
+            }
 
         } catch (FileNotFoundException e) {
             System.err.println("ERROR: No se encontro el archivo: " + fileName);
@@ -40,7 +48,8 @@ public class Scanner {
         }
     }
 
-    //Procesa una línea completa del archivo y extrae todos los lexemas de esa linea
+    // Procesa una linea completa del archivo y extrae todos los lexemas de esa
+    // linea
     private void procesarLinea(String linea) {
         if (linea == null || linea.trim().isEmpty()) {
             return;
@@ -49,7 +58,7 @@ public class Scanner {
         // Eliminar espacios en blanco excepto dentro de valores
         linea = linea.trim();
 
-        // Extraer todos los lexemas de esta línea
+        // Extraer todos los lexemas de esta linea
         ArrayList<String> lexemas = extraerLexemas(linea);
 
         // Analizar cada lexema
@@ -59,7 +68,6 @@ public class Scanner {
             }
         }
     }
-
 
     private ArrayList<String> extraerLexemas(String linea) {
         ArrayList<String> lexemas = new ArrayList<>();
@@ -114,22 +122,23 @@ public class Scanner {
         }
         return lexemas;
     }
-    private void verificacionLineas(String lineaActual){
-        if(lineaActual == null || lineaActual.trim().isEmpty()){
+
+    private void verificacionLineas(String lineaActual) {
+        if (lineaActual == null || lineaActual.trim().isEmpty()) {
             return;
         }
 
-        if(lineaActual.startsWith("<") && lineaActual.endsWith(">")){
-            //Agregar error en caso exista una etiqueta vacia
-            if(lineaActual.length() <= 2){
+        if (lineaActual.startsWith("<") && lineaActual.endsWith(">")) {
+            // Agregar error en caso exista una etiqueta vacia
+            if (lineaActual.length() <= 2) {
                 errores.add(new AER(numeroLinea, lineaActual, "Etiqueta vacia"));
                 return;
             }
 
             char[] actual = lineaActual.toCharArray();
-            //Verificar etiqueta de cierre vacia
-            if(actual[1] == '/'){
-                if(lineaActual.length() == 3){
+            // Verificar etiqueta de cierre vacia
+            if (actual[1] == '/') {
+                if (lineaActual.length() == 3) {
                     errores.add(new AER(numeroLinea, lineaActual, "Etiqueta de cierre vacia"));
                     return;
                 }
@@ -138,15 +147,15 @@ public class Scanner {
                 verificarApertura(lineaActual);
             }
 
-        } else if(esNumero(lineaActual)){
+        } else if (esNumero(lineaActual)) {
             tokensList.add(new Token(lineaActual, Token.Tokencitos.NUMERO, numeroLinea));
         } else {
             errores.add(new AER(numeroLinea, lineaActual, "Lexema no reconocido"));
         }
     }
 
-    private void verificarCierre(String lineaActual){
-        //Limpiar linea actual para mejor analisis
+    private void verificarCierre(String lineaActual) {
+        // Limpiar linea actual para mejor analisis
         String contenido = lineaActual.substring(2, lineaActual.length() - 1).trim();
 
         switch (contenido) {
@@ -158,39 +167,40 @@ public class Scanner {
         }
     }
 
-    private void verificarApertura(String lineaActual){
-        //Limpiar linea actual para mejor analisis
+    private void verificarApertura(String lineaActual) {
+        // Limpiar linea actual para mejor analisis
         String contenido = lineaActual.substring(1, lineaActual.length() - 1).trim();
 
-        if(contenido.startsWith("Operacion=")){
-            //Separar lexema Operacion= y el nombre de la operacion para analizar este ultimo
+        if (contenido.startsWith("Operacion=")) {
+            // Separar lexema Operacion= y el nombre de la operacion para analizar este
+            // ultimo
             String[] partes = contenido.split("=", 2);
-            //Verificar que solo exista un signo =
-            if(partes.length == 2) {
-                //Tomar el nombre de la operacion
+            // Verificar que solo exista un signo =
+            if (partes.length == 2) {
+                // Tomar el nombre de la operacion
                 String operacion = partes[1].trim();
 
-                if(verificarOperacion(operacion)){
+                if (verificarOperacion(operacion)) {
                     Token token = new Token(lineaActual, Token.Tokencitos.APERTURA_OPERACION, numeroLinea);
-                    //Configurar parametro extra para operaciones
+                    // Configurar parametro extra para operaciones
                     token.setOperador(operacion);
                     tokensList.add(token);
-                    //Si la operacion es valida, el lexema es valido
+                    // Si la operacion es valida el lexema es valido
                     tokensList.add(new Token(operacion, Token.Tokencitos.NOMBRE_OPERACION, numeroLinea));
                 } else {
-                    errores.add(new AER(numeroLinea, operacion, "Operador invalido: " + operacion));
+                    errores.add(new AER(numeroLinea, operacion, null));
                 }
             } else {
                 errores.add(new AER(numeroLinea, contenido, "Formato incorrecto en apertura de operacion"));
             }
 
-        } else if(contenido.equals("Numero")){
+        } else if (contenido.equals("Numero")) {
             tokensList.add(new Token(lineaActual, Token.Tokencitos.APERTURA_NUMERO, numeroLinea));
 
-        } else if(contenido.equals("P")){
+        } else if (contenido.equals("P")) {
             tokensList.add(new Token(lineaActual, Token.Tokencitos.APERTURA_POTENCIA, numeroLinea));
 
-        } else if(contenido.equals("R")){
+        } else if (contenido.equals("R")) {
             tokensList.add(new Token(lineaActual, Token.Tokencitos.APERTURA_RAIZ, numeroLinea));
 
         } else {
@@ -198,7 +208,7 @@ public class Scanner {
         }
     }
 
-    private boolean verificarOperacion(String op){
+    private boolean verificarOperacion(String op) {
         return op.equals("SUMA") || op.equals("RESTA") || op.equals("MULTIPLICACION") ||
                 op.equals("DIVISION") || op.equals("POTENCIA") || op.equals("RAIZ") ||
                 op.equals("INVERSO") || op.equals("MOD");
@@ -211,7 +221,7 @@ public class Scanner {
 
         int inicio = 0;
         if (str.charAt(0) == '-') {
-            //El string solo es una signo -
+            // El string solo es una signo -
             if (str.length() == 1) {
                 return false;
             }
@@ -227,7 +237,7 @@ public class Scanner {
             if (Character.isDigit(c)) {
                 digitoEncontrado = true;
             } else if (c == '.') {
-                //Si previamente se encontro un punto
+                // Si previamente se encontro un punto
                 if (puntoEncontrado) {
                     return false;
                 }
@@ -242,7 +252,7 @@ public class Scanner {
                 !(str.startsWith(".") || str.startsWith("-."));
     }
 
-    private void mostrarTokens(){
+    private void mostrarTokens() {
         System.out.println("----------LISTA DE TOKENS----------");
         for (Token t : tokensList) {
             System.out.println(t.toString());
@@ -250,11 +260,11 @@ public class Scanner {
         System.out.println("-----------------------------------");
     }
 
-    private void mostrarErrores(){
-        System.out.println("---------LISTA DE ERRRORES---------");
-        if(errores.isEmpty()){
+    private void mostrarErrores() {
+        System.out.println("---------LISTA DE ERRRORES LEXICOS---------");
+        if (errores.isEmpty()) {
             System.out.println("No hay errores registrados");
-        }else{
+        } else {
             for (AER err : errores) {
                 System.out.println(err.toString());
             }
@@ -269,5 +279,13 @@ public class Scanner {
 
     public void setTokens(ArrayList<Token> tokensList) {
         this.tokensList = tokensList;
+    }
+
+    public ArrayList<AER> getErrores() {
+        return errores;
+    }
+
+    public void setErrores(ArrayList<AER> errores) {
+        this.errores = errores;
     }
 }

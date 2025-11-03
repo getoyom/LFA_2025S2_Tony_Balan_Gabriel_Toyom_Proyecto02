@@ -33,7 +33,7 @@ public class Main {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                 System.out.println("Look and Feel configurado: Nimbus");
             } catch (Exception ex) {
-                // Usar el LookAndFeel predeterminado si falla Nimbus
+                //Usar el LookAndFeel predeterminado si falla Nimbus
             }
         }
     }

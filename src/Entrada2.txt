@@ -1,0 +1,398 @@
+<Operacion= SUMA>
+    <Numero> 10 </Numero>
+    <Numero> 20 </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> 1.5 </Numero>
+    <Numero> 2.5 </Numero>
+    <Numero> 3.5 </Numero>
+    <Numero> 4.5 </Numero>
+</Operacion>
+
+<Operacion= RESTA>
+    <Numero> 100 </Numero>
+    <Numero> 25.5 </Numero>
+    <Numero> 10 </Numero>
+</Operacion>
+
+<Operacion= MULTIPLICACION>
+    <Numero> 2 </Numero>
+    <Numero> 3 </Numero>
+    <Numero> 4 </Numero>
+</Operacion>
+
+<Operacion= DIVISION>
+    <Numero> 100 </Numero>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= MOD>
+    <Numero> 17 </Numero>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= POTENCIA>
+    <P> 3 </P>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= RAIZ>
+    <R> 3 </R>
+    <Numero> 27 </Numero>
+</Operacion>
+
+<Operacion= INVERSO>
+    <Numero> 8 </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> 10 </Numero>
+    <Operacion= MULTIPLICACION>
+        <Numero> 2 </Numero>
+        <Numero> 3 </Numero>
+    </Operacion>
+</Operacion>
+
+<Operacion= POTENCIA>
+    <P> 2 </P>
+    <Operacion= SUMA>
+        <Numero> 5 </Numero>
+        <Operacion= RAIZ>
+            <R> 2 </R>
+            <Numero> 16 </Numero>
+        </Operacion>
+    </Operacion>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> -5 </Numero>
+    <Numero> 10 </Numero>
+</Operacion>
+
+<Operacion= DIVISION>
+    <Numero> 3.14159 </Numero>
+    <Numero> 2.5 </Numero>
+</Operacion>
+
+<Operacion= INVERSO>
+    <Operacion= SUMA>
+        <Numero> 1 </Numero>
+        <Numero> 2 </Numero>
+    </Operacion>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> 3..5 </Numero>
+    <Numero> 2 </Numero>
+</Operacion>
+
+<Operacion= RESTA>
+    <Numero> 1.2.3 </Numero>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= MULTIPLICACION>
+    <Numero> . </Numero>
+    <Numero> 10 </Numero>
+</Operacion>
+
+<Operacion= DIVISION>
+    <Numero> .5 </Numero>
+    <Numero> 2 </Numero>
+</Operacion>
+
+<Operacion= MOD>
+    <Numero> 5. </Numero>
+    <Numero> 2 </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> abc </Numero>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= RESTA>
+    <Numero> 1e5 </Numero>
+    <Numero> 10 </Numero>
+</Operacion>
+
+<Operacion= MULTIPLICACION>
+    <Numero> 5$ </Numero>
+    <Numero> 2 </Numero>
+</Operacion>
+
+<Operacion= SUMAR>
+    <Numero> 1 </Numero>
+    <Numero> 2 </Numero>
+</Operacion>
+
+<Operacion= suma>
+    <Numero> 5 </Numero>
+    <Numero> 3 </Numero>
+</Operacion>
+
+<Operacion= Suma>
+    <Numero> 10 </Numero>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<>
+
+</>
+
+<Operacion=>
+    <Numero> 10 </Numero>
+</Operacion>
+
+<Operacion= >
+    <Numero> 15 </Numero>
+</Operacion>
+
+<Operacion SUMA>
+    <Numero> 5 </Numero>
+    <Numero> 3 </Numero>
+</Operacion>
+
+<OPERACION= SUMA>
+    <Numero> 5 </Numero>
+</OPERACION>
+
+<Operacion= DIVISION>
+    <Numero> 100 </Numero>
+    <numero> 5 </numero>
+</Operacion>
+
+<Operacion= POTENCIA>
+    <p> 2 </p>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= RAIZ>
+    <r> 3 </r>
+    <Numero> 27 </Numero>
+</Operacion>
+
+< Operacion= RESTA>
+    <Numero> 50 </Numero>
+    <Numero> 10 </Numero>
+</Operacion>
+
+Operacion= SUMA>
+    <Numero> 1 </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    5
+    <Numero> 3 </Numero>
+</Operacion>
+
+</Operacion>
+
+</Numero>
+
+<Operacion= SUMA>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= RESTA>
+</Operacion>
+
+<Operacion= MULTIPLICACION>
+    <Numero> 7 </Numero>
+</Operacion>
+
+<Operacion= DIVISION>
+    <Numero> 10 </Numero>
+</Operacion>
+
+<Operacion= DIVISION>
+    <Numero> 100 </Numero>
+    <Numero> 5 </Numero>
+    <Numero> 2 </Numero>
+</Operacion>
+
+<Operacion= MOD>
+    <Numero> 15 </Numero>
+</Operacion>
+
+<Operacion= MOD>
+    <Numero> 20 </Numero>
+    <Numero> 3 </Numero>
+    <Numero> 2 </Numero>
+</Operacion>
+
+<Operacion= POTENCIA>
+    <Numero> 2 </Numero>
+    <Numero> 3 </Numero>
+</Operacion>
+
+<Operacion= POTENCIA>
+    <P> 2 </P>
+    <P> 3 </P>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= POTENCIA>
+    <P> 3 </P>
+</Operacion>
+
+<Operacion= POTENCIA>
+    <P> 2 </P>
+    <Numero> 3 </Numero>
+    <Numero> 4 </Numero>
+</Operacion>
+
+<Operacion= RAIZ>
+    <Numero> 2 </Numero>
+    <Numero> 16 </Numero>
+</Operacion>
+
+<Operacion= RAIZ>
+    <R> 2 </R>
+    <R> 3 </R>
+    <Numero> 8 </Numero>
+</Operacion>
+
+<Operacion= RAIZ>
+    <R> 5 </R>
+</Operacion>
+
+<Operacion= RAIZ>
+    <R> 3 </R>
+    <Numero> 27 </Numero>
+    <Numero> 8 </Numero>
+</Operacion>
+
+<Operacion= INVERSO>
+</Operacion>
+
+<Operacion= INVERSO>
+    <Numero> 5 </Numero>
+    <Numero> 10 </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> 5 </Numero>
+    <Numero> 3 </Numero>
+
+<Operacion= RESTA>
+    <Numero> 10
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= POTENCIA>
+    <P> 2
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= RAIZ>
+    <R> 3
+    <Numero> 27 </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> 5 </Operacion>
+    <Numero> 3 </Numero>
+</Operacion>
+
+<Operacion= RESTA>
+    <Numero> 10 </Numero>
+    <Numero> 5 </Numero>
+</Numero>
+
+<Operacion= MULTIPLICACION>
+    <Numero> 2 </Numero>
+    <Numero> 3 </Numero>
+</Operacio>
+
+<Numero> 50 </Numero>
+
+42
+
+<Operacion= SUMA>
+    <P> 2 </P>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= MULTIPLICACION>
+    <R> 3 </R>
+    <Numero> 27 </Numero>
+</Operacion>
+
+<Operacion= DIVISION>
+    <Numero> </Numero>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> 5 </Numero>
+    <Operacion= RESTA>
+        <Numero> 10 </Numero>
+    </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> 1..5 </Numero>
+    <Numero> abc </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> 3.141592653589793 </Numero>
+    <Numero> 2.718281828459045 </Numero>
+</Operacion>
+
+<Operacion= RESTA>
+    <Numero> -123.456 </Numero>
+    <Numero> 78.9 </Numero>
+</Operacion>
+
+<Operacion= MULTIPLICACION>
+    <Numero> 0 </Numero>
+    <Numero> 100 </Numero>
+</Operacion>
+
+<Operacion= DIVISION>
+    <Numero> 999999999 </Numero>
+    <Numero> 3 </Numero>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> 1 </Numero>
+    <Operacion= RESTA>
+        <Numero> 10 </Numero>
+        <Operacion= MULTIPLICACION>
+            <Numero> 2 </Numero>
+            <Operacion= DIVISION>
+                <Numero> 20 </Numero>
+                <Numero> 4 </Numero>
+            </Operacion>
+        </Operacion>
+    </Operacion>
+</Operacion>
+
+<Operacion= SUMA>
+    <Numero> - </Numero>
+    <Numero> 5 </Numero>
+</Operacion>
+
+<Operacion= RESTA>
+    <Numero> --5 </Numero>
+    <Numero> 3 </Numero>
+</Operacion>
+
+<Operacion= MULTIPLICACION>
+    <Numero> -. </Numero>
+    <Numero> 2 </Numero>
+</Operacion>
+
+<Operacion= DIVISION>
+    <Numero> 1 0 </Numero>
+    <Numero> 2 </Numero>
+</Operacion>
+
+<Operacion= SUMAR>
+    <Numero> 1..2.3 </Numero>
+    <numero> abc </numero>
+    <P> 2 </P>
+</Operacion>

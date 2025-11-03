@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errores Encontrados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 30px;
+        }
+        h1 {
+            color: #e74c3c;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 15px;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-left: 4px solid #e74c3c;
+            padding-left: 15px;
+        }
+        .info-header {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        .info-header p {
+            margin: 5px 0;
+            color: #856404;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        thead {
+            background: #e74c3c;
+            color: white;
+        }
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tbody tr:hover {
+            background: #ffe6e6;
+            transition: background 0.3s;
+        }
+        .error-lexico {
+            background: #fff3f3;
+        }
+        .error-sintactico {
+            background: #fff9f3;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #c7254e;
+        }
+        .no-errors {
+            text-align: center;
+            padding: 40px;
+            color: #27ae60;
+            font-weight: bold;
+            background: #d4edda;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Errores Encontrados en el Analisis</h1>
+        <div class="info-header">
+            <p><strong>Fecha:</strong> 03/11/2025 09:00:09</p>
+            <p><strong>Total de errores:</strong> 0</p>
+        </div>
+        <h2>Errores Lexicos</h2>
+        <div class="no-errors">
+            <p>No se encontraron errores lexicos.</p>
+        </div>
+        <h2>Errores Sintacticos y Semanticos</h2>
+        <div class="no-errors">
+            <p>No se encontraron errores sintacticos o semanticos.</p>
+        </div>
+    </div>
+</body>
+</html>

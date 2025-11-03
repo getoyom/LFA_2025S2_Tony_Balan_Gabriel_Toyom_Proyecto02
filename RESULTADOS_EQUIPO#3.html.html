@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Operaciones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 30px;
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        .info-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        .info-header p {
+            margin: 5px 0;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tbody tr:hover {
+            background: #f5f5f5;
+            transition: background 0.3s;
+        }
+        .operacion {
+            font-family: 'Courier New', monospace;
+            color: #2c3e50;
+        }
+        .resultado {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 1.1em;
+        }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resultados de Operaciones Aritmeticas</h1>
+        <div class="info-header">
+            <p><strong>Fecha:</strong> 03/11/2025 09:00:09</p>
+            <p><strong>Total de operaciones validas:</strong> 9</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Operacion</th>
+                    <th>Resultado</th>
+                    <th>Linea</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td class="operacion">SUMA(3.2, 7.8, 1)</td>
+                    <td class="resultado">12</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="operacion">RESTA(50, 12.75, 0.5)</td>
+                    <td class="resultado">36.7500</td>
+                    <td>7</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="operacion">MULTIPLICACION(6, 2.5, 3)</td>
+                    <td class="resultado">45</td>
+                    <td>13</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="operacion">DIVISION(81, 3)</td>
+                    <td class="resultado">27</td>
+                    <td>19</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td class="operacion">POTENCIA(3, SUMA(1.5, 2.5))</td>
+                    <td class="resultado">64</td>
+                    <td>24</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td class="operacion">RAIZ(5, 243)</td>
+                    <td class="resultado">3</td>
+                    <td>32</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td class="operacion">INVERSO(MULTIPLICACION(4, 5))</td>
+                    <td class="resultado">0.0500</td>
+                    <td>37</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td class="operacion">MOD(58, 9)</td>
+                    <td class="resultado">4</td>
+                    <td>44</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td class="operacion">SUMA(5, POTENCIA(2, RAIZ(3, 125)))</td>
+                    <td class="resultado">30.0000</td>
+                    <td>49</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

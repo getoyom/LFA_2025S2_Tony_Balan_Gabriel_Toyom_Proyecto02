@@ -1,8 +1,10 @@
 package org.example.Parser;
 
 import org.example.Lexer.*;
+import org.example.Lexer.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Stack;
 
 /**
@@ -21,6 +23,7 @@ public class Sintactico {
     private ArrayList<AES> erroresSintacticos;
     private HashMap<String, Float> operacionesResultados;
     private ArrayList<ArrayList<Token>> operacionesValidas;
+    private HashSet<Integer> lineasConErroresLexicos;
 
     public Sintactico() {
         this.filtro1 = new ArrayList<>();
@@ -28,13 +31,20 @@ public class Sintactico {
         this.erroresSintacticos = new ArrayList<>();
         this.operacionesResultados = new HashMap<>();
         this.operacionesValidas = new ArrayList<>();
+        this.lineasConErroresLexicos = new HashSet<>();
     }
 
     /**
      * Proceso principal de analisis
      */
-    public void filtrarTokens(ArrayList<Token> tokensValidos) {
+    public void filtrarTokens(ArrayList<Token> tokensValidos, ArrayList<AER> erroresLexicos) {
         System.out.println("\n=== INICIANDO ANÁLISIS ===");
+
+        // Registrar líneas con errores léxicos
+        for (AER error : erroresLexicos) {
+            lineasConErroresLexicos.add(error.getLN());
+        }
+
         System.out.println("Fase 1: Filtrado lexico...");
         verificarLexico(tokensValidos);
 
@@ -151,6 +161,17 @@ public class Sintactico {
                     }
 
                     if (nivelAnidacion == 0) {
+                        // NUEVA VALIDACIÓN: Verificar si el bloque contiene líneas con errores léxicos
+                        if (contieneErroresLexicos(bloqueActual)) {
+                            hayError = true;
+                            registrarErrorSintactico(
+                                    bloqueActual.get(0).getLinea(),
+                                    "Operacion",
+                                    "Error lexico en operacion",
+                                    "La operacion contiene tokens con errores lexicos"
+                            );
+                        }
+
                         if (!hayError) {
                             filtro2.add(new ArrayList<>(bloqueActual));
                         }
@@ -164,6 +185,18 @@ public class Sintactico {
         }
 
         procesarBloquePendiente(pilaOperaciones, bloqueActual);
+    }
+
+    /**
+     * NUEVA FUNCIÓN: Verifica si un bloque de tokens contiene líneas con errores léxicos
+     */
+    private boolean contieneErroresLexicos(ArrayList<Token> bloque) {
+        for (Token token : bloque) {
+            if (lineasConErroresLexicos.contains(token.getLinea())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void procesarBloquePendiente(Stack<Token> pila, ArrayList<Token> bloque) {

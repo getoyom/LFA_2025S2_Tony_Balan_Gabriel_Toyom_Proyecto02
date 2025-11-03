@@ -30,10 +30,7 @@ public class Scanner {
 
             System.out.printf("Archivo leido exitosamente: %s\n", fileName);
             System.out.printf("Total de tokens reconocidos: %d\n", tokensList.size());
-            /*
-             * MOMENTANEO, QUITAR LUEGO
-             *
-             */
+
             mostrarTokens();
             if (errores.isEmpty()) {
                 System.out.println("No hay errores lexicos registrados.");
@@ -138,7 +135,7 @@ public class Scanner {
             char[] actual = lineaActual.toCharArray();
             // Verificar etiqueta de cierre vacia
             if (actual[1] == '/') {
-                if (lineaActual.length() == 3) {
+                if (lineaActual.length() <= 3) {
                     errores.add(new AER(numeroLinea, lineaActual, "Etiqueta de cierre vacia"));
                     return;
                 }
@@ -185,10 +182,10 @@ public class Scanner {
                     // Configurar parametro extra para operaciones
                     token.setOperador(operacion);
                     tokensList.add(token);
-                    // Si la operacion es valida el lexema es valido
+                    // Si la operacion es valida, todo el lexema es valido
                     tokensList.add(new Token(operacion, Token.Tokencitos.NOMBRE_OPERACION, numeroLinea));
                 } else {
-                    errores.add(new AER(numeroLinea, operacion, null));
+                    errores.add(new AER(numeroLinea, operacion, "Operador invalido"));
                 }
             } else {
                 errores.add(new AER(numeroLinea, contenido, "Formato incorrecto en apertura de operacion"));

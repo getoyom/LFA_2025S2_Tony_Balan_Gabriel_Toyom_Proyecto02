@@ -310,7 +310,7 @@ public class InterfazGrafica extends JFrame {
                 scanner.scanFile(archivoTemporal.getAbsolutePath());
 
                 // Realizar analisis sintactico y semantico
-                analizadorSintactico.filtrarTokens(scanner.getTokens());
+                analizadorSintactico.filtrarTokens(scanner.getTokens(), scanner.getErrores());
 
                 // Generar archivos de salida
                 generarArchivosReporte();

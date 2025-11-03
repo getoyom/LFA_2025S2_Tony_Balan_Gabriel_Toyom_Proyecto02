@@ -1,0 +1,38 @@
+<Operacion=DIVISION>
+Pila[DIVISIÓN]
+Operandos[0]
+Nivel 1
+
+	<Numero> 10 </Numero>
+    Pila[DIVISION]
+    Operandos[1]
+    nivel 1 -----> nivel anidación
+
+	<Operacion=RESTA>
+    
+    Pila[DIVISION, RESTA]
+    Operandos[1, 0]
+    nivel anidación 2 --> Dos operaciones
+
+		<Numero> 3 </Numero>
+        Pila[DIVISION, RESTA]
+        Operandos[1, 1]
+        Nivel anidación 2
+
+		<Numero> 3 </Numero>
+        Pila[DIVISION, RESTA]
+        Operandos[1, 2]
+        Nivel anidación 2
+
+	</Operacion>
+    Pila[DIVISION]
+    Operandos[2]
+    Nivel anidación 1
+
+</Operacion>
+
+Pila[]
+Operandos[]
+Nivel anidación 0
+
+<Operacion=MUTIPLACION>

@@ -19,6 +19,10 @@ public class Main {
                token.getTokens() == Token.Tokencitos.CIERRE_OPERACION ||
                token.getTokens() == Token.Tokencitos.APERTURA_NUMERO ||
                token.getTokens() == Token.Tokencitos.CIERRE_NUMERO ||
+               token.getTokens() == Token.Tokencitos.APERTURA_POTENCIA ||
+               token.getTokens() == Token.Tokencitos.CIERRE_POTENCIA ||
+               token.getTokens() == Token.Tokencitos.APERTURA_RAIZ ||
+               token.getTokens() == Token.Tokencitos.CIERRE_RAIZ ||
                token.getTokens() == Token.Tokencitos.NUMERO ||
                token.getTokens() == Token.Tokencitos.NOMBRE_OPERACION){
                 tokensValidos.add(token);

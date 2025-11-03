@@ -66,6 +66,14 @@ public class sintactico {
                 filtro1.add(token);
             } else if (token.getTokens() == Token.Tokencitos.CIERRE_NUMERO) {
                 filtro1.add(token);
+            } else if (token.getTokens() == Token.Tokencitos.APERTURA_POTENCIA) {
+                filtro1.add(token);
+            } else if (token.getTokens() == Token.Tokencitos.CIERRE_POTENCIA) {
+                filtro1.add(token);
+            } else if (token.getTokens() == Token.Tokencitos.APERTURA_RAIZ) {
+                filtro1.add(token);
+            } else if (token.getTokens() == Token.Tokencitos.CIERRE_RAIZ) {
+                filtro1.add(token);
             } else if (token.getTokens() == Token.Tokencitos.NOMBRE_OPERACION) {
                 filtro1.add(token);
             } else if (token.getTokens() == Token.Tokencitos.NUMERO) {
@@ -78,33 +86,37 @@ public class sintactico {
 
     // Validar sintaxis y semántica de las operaciones
     private void verSintaxis(ArrayList<Token> filtro1){
-        // Pila para validar balanceo de etiquetas
         Stack<Token> pila = new Stack<>();
-        // Pila para contar operandos por cada nivel de anidación
         Stack<Integer> contadorOperandos = new Stack<>();
-        // Lista temporal para acumular tokens de una operación completa
         ArrayList<Token> bloqueActual = new ArrayList<>();
-        // Contador de profundidad de anidación
         int nivelAnidacion = 0;
-        // Flag para marcar si la operación actual tiene errores
         boolean operacionConError = false;
         
         for(int i = 0; i < filtro1.size(); i++){
             Token tokensito = filtro1.get(i);
             
             if(tokensito.getTokens() == Token.Tokencitos.APERTURA_OPERACION){
-                // Verificar si el operador es válido antes de procesar
+                // Si encontramos nueva apertura en nivel 0 y hay bloque pendiente, procesarlo
+                if(nivelAnidacion == 0 && !bloqueActual.isEmpty()){
+                    // Procesar bloque anterior sin cierre
+                    while(!pila.isEmpty()){
+                        Token tokenMalo = pila.pop();
+                        erroresSintacticos.add(new AES(tokenMalo.getLinea(), tokenMalo.getValor(), "Error de sintaxis", "Operación sin cerrar"));
+                    }
+                    contadorOperandos.clear();
+                    bloqueActual.clear();
+                    operacionConError = false;
+                }
+                
                 if(!verificarOperador(tokensito.getOperador())){
                     operacionConError = true;
                     erroresSintacticos.add(new AES(tokensito.getLinea(), tokensito.getValor(), "Error de sintaxis", "Operador inválido: " + tokensito.getOperador()));
                 }
                 
-                // Validar estructura de números en esta operación
                 if(!validarEstructuraNumeros(filtro1, i)){
                     operacionConError = true;
                 }
                 
-                // Validar estructura específica por operación
                 if(!validarEstructuraEspecifica(filtro1, i)){
                     operacionConError = true;
                 }
@@ -131,7 +143,12 @@ public class sintactico {
                     int operandos = contadorOperandos.pop();
                     
                     String operador = apertura.getOperador();
-                    int operandosRequeridos = operador.equals("INVERSO") ? 1 : 2;
+                    int operandosRequeridos;
+                    if(operador.equals("INVERSO") || operador.equals("RAIZ")){
+                        operandosRequeridos = 1;
+                    } else {
+                        operandosRequeridos = 2;
+                    }
                     
                     if(operandos < operandosRequeridos){
                         erroresSintacticos.add(new AES(apertura.getLinea(), apertura.getValor(), "Error semántico", "La operación " + operador + " debe tener al menos " + operandosRequeridos + " operando(s), encontrados: " + operandos));
@@ -145,9 +162,7 @@ public class sintactico {
                         contadorOperandos.push(operandosSuperiores + 1);
                     }
                     
-                    // Si volvemos al nivel 0, completamos una operación principal
                     if(nivelAnidacion == 0){
-                        // Solo agregar si no hay errores
                         if(!operacionConError){
                             filtro2.add(new ArrayList<>(bloqueActual));
                         }
@@ -173,7 +188,6 @@ public class sintactico {
     private boolean validarEstructuraNumeros(ArrayList<Token> tokens, int inicioOperacion){
         if(inicioOperacion >= tokens.size()) return true;
         
-        String operador = tokens.get(inicioOperacion).getOperador();
         int nivel = 0;
         boolean estructuraValida = true;
         
@@ -192,14 +206,10 @@ public class sintactico {
                     
                     boolean esValido = false;
                     
-                    // Validar según el tipo de operación
-                    if(operador.equals("POTENCIA") || operador.equals("RAIZ")){
-                        esValido = (anterior.getTokens() == Token.Tokencitos.APERTURA_NUMERO && siguiente.getTokens() == Token.Tokencitos.CIERRE_NUMERO) ||
-                                  (anterior.getTokens() == Token.Tokencitos.APERTURA_POTENCIA && siguiente.getTokens() == Token.Tokencitos.CIERRE_POTENCIA) ||
-                                  (anterior.getTokens() == Token.Tokencitos.APERTURA_RAIZ && siguiente.getTokens() == Token.Tokencitos.CIERRE_RAIZ);
-                    } else {
-                        esValido = anterior.getTokens() == Token.Tokencitos.APERTURA_NUMERO && siguiente.getTokens() == Token.Tokencitos.CIERRE_NUMERO;
-                    }
+                    // Números pueden estar en <Numero>, <P> o <R>
+                    esValido = (anterior.getTokens() == Token.Tokencitos.APERTURA_NUMERO && siguiente.getTokens() == Token.Tokencitos.CIERRE_NUMERO) ||
+                              (anterior.getTokens() == Token.Tokencitos.APERTURA_POTENCIA && siguiente.getTokens() == Token.Tokencitos.CIERRE_POTENCIA) ||
+                              (anterior.getTokens() == Token.Tokencitos.APERTURA_RAIZ && siguiente.getTokens() == Token.Tokencitos.CIERRE_RAIZ);
                     
                     if(!esValido){
                         erroresSintacticos.add(new AES(token.getLinea(), token.getValor(), "Error de sintaxis", "Número sin etiquetas correctas"));
@@ -218,46 +228,42 @@ public class sintactico {
         
         String operador = tokens.get(inicioOperacion).getOperador();
         int nivel = 0;
-        int contadorP = 0, contadorR = 0, contadorNumero = 0;
+        int contadorOperandos = 0;
         boolean estructuraValida = true;
         
         for(int i = inicioOperacion; i < tokens.size(); i++){
             Token token = tokens.get(i);
             
             if(token.getTokens() == Token.Tokencitos.APERTURA_OPERACION){
+                if(nivel == 1) contadorOperandos++; // Operación anidada cuenta como operando
                 nivel++;
             } else if(token.getTokens() == Token.Tokencitos.CIERRE_OPERACION){
                 nivel--;
                 if(nivel == 0) break;
             } else if(nivel == 1){
-                // Solo contar en el nivel principal de la operación
-                if(token.getTokens() == Token.Tokencitos.APERTURA_POTENCIA){
-                    contadorP++;
-                    if(!operador.equals("POTENCIA")){
-                        erroresSintacticos.add(new AES(token.getLinea(), token.getValor(), "Error de sintaxis", "Etiqueta <P> solo válida en operaciones POTENCIA"));
-                        estructuraValida = false;
+                if(token.getTokens() == Token.Tokencitos.NUMERO){
+                    // Solo contar números que están en <Numero>, no en <P> o <R>
+                    if(i > 0 && i < tokens.size() - 1){
+                        Token anterior = tokens.get(i - 1);
+                        if(anterior.getTokens() == Token.Tokencitos.APERTURA_NUMERO){
+                            contadorOperandos++;
+                        }
                     }
-                } else if(token.getTokens() == Token.Tokencitos.APERTURA_RAIZ){
-                    contadorR++;
-                    if(!operador.equals("RAIZ")){
-                        erroresSintacticos.add(new AES(token.getLinea(), token.getValor(), "Error de sintaxis", "Etiqueta <R> solo válida en operaciones RAIZ"));
-                        estructuraValida = false;
-                    }
-                } else if(token.getTokens() == Token.Tokencitos.APERTURA_NUMERO){
-                    contadorNumero++;
+                } else if(token.getTokens() == Token.Tokencitos.APERTURA_OPERACION){
+                    // Ya se cuenta en el nivel++ de arriba, no hacer nada adicional
                 }
             }
         }
         
         // Validar estructura específica por operación
         if(operador.equals("POTENCIA")){
-            if(contadorP != 1 || contadorNumero != 1){
-                erroresSintacticos.add(new AES(tokens.get(inicioOperacion).getLinea(), operador, "Error de sintaxis", "POTENCIA debe tener exactamente 1 <P> y 1 <Numero>"));
+            if(contadorOperandos != 1){
+                erroresSintacticos.add(new AES(tokens.get(inicioOperacion).getLinea(), operador, "Error de sintaxis", "POTENCIA debe tener exactamente 1 operando (base), encontrados: " + contadorOperandos));
                 estructuraValida = false;
             }
         } else if(operador.equals("RAIZ")){
-            if(contadorR != 1 || contadorNumero != 1){
-                erroresSintacticos.add(new AES(tokens.get(inicioOperacion).getLinea(), operador, "Error de sintaxis", "RAIZ debe tener exactamente 1 <R> y 1 <Numero>"));
+            if(contadorOperandos != 1){
+                erroresSintacticos.add(new AES(tokens.get(inicioOperacion).getLinea(), operador, "Error de sintaxis", "RAIZ debe tener exactamente 1 operando, encontrados: " + contadorOperandos));
                 estructuraValida = false;
             }
         }
@@ -473,18 +479,18 @@ public class sintactico {
                 return resultado;
             case "pow":
                 if(operandos.size() >= 2){
-                    float exponente = operandos.get(0);
-                    float base = operandos.get(1);
+                    float exponente = operandos.get(0); // Primer operando es el exponente de <P>
+                    float base = operandos.get(1);      // Segundo operando es la base
                     return (float) Math.pow(base, exponente);
                 }
                 return 0f;
             case "sqrt":
-                if(operandos.size() == 1){
-                    return (float) Math.sqrt(operandos.get(0));
-                } else {
-                    float indice = operandos.get(0);
-                    float radicando = operandos.get(1);
+                if(operandos.size() >= 2){
+                    float indice = operandos.get(0);    // Primer operando es el índice de <R>
+                    float radicando = operandos.get(1); // Segundo operando es el radicando
                     return (float) Math.pow(radicando, 1.0f / indice);
+                } else {
+                    return (float) Math.sqrt(operandos.get(0)); // Raíz cuadrada por defecto
                 }
             case "inv":
                 if(operandos.get(0) == 0.0f){

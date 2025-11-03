@@ -1,3 +1,12 @@
+<Operacion=POTENCIA>
+    <P> 3 </P>
+    <P> 2 </P>
+</Operacion>
+
+<Operacion=RAIZ>
+    <R>4</R>
+</Operacion>
+
 <Operacion= SUMA>
     <Numero> 10 </Numero>
     <Numero> 20 </Numero>

@@ -1,17 +1,11 @@
 package org.example.Parser;
 
-/**
- * Almacena Error Sintactico/Semantico
- */
+/* Representa un error sintactico o semantico encontrado durante el analisis */
 public class AES {
     private int lineaError;
-    private String contenido;
-    private String tipo;
-    private String contexto;
-
-    public AES(int linea, String contenido, String tipo) {
-        this(linea, contenido, tipo, null);
-    }
+    private final String contenido;
+    private final String tipo;
+    private final String contexto;
 
     public AES(int linea, String contenido, String tipo, String contexto) {
         this.lineaError = linea;
@@ -32,16 +26,10 @@ public class AES {
         return sb.toString();
     }
 
-    // Getters y Setters
+    /*Getters*/
     public int getLinea() { return lineaError; }
     public void setLinea(int linea) { this.lineaError = linea; }
-
     public String getContenido() { return contenido; }
-    public void setContenido(String contenido) { this.contenido = contenido; }
-
     public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
-
     public String getContexto() { return contexto; }
-    public void setContexto(String contexto) { this.contexto = contexto; }
 }

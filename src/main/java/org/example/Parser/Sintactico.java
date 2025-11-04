@@ -1,29 +1,24 @@
 package org.example.Parser;
 
 import org.example.Lexer.*;
-import org.example.Lexer.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
 
-/**
- * Analizador Sintactico y Semantico
- *
- * Responsabilidades:
- * - Validar la estructura sintactica de las operaciones
- * - Validar la semantica de las operaciones matematicas
- * - Calcular resultados de operaciones validas
- * - Gestionar errores encontrados
- */
+/*Analizador Sintactico y Semantico
+ * - Valida la estructura sintactica de las operaciones
+ * - Valida la semantica de las operaciones matematicas
+ * - Calcula resultados de operaciones validas
+ * - Gestiona errores encontrados*/
 public class Sintactico {
 
-    private ArrayList<Token> filtro1;
-    private ArrayList<ArrayList<Token>> filtro2;
-    private ArrayList<AES> erroresSintacticos;
-    private HashMap<String, Float> operacionesResultados;
-    private ArrayList<ArrayList<Token>> operacionesValidas;
-    private HashSet<Integer> lineasConErroresLexicos;
+    private final ArrayList<Token> filtro1;
+    private final ArrayList<ArrayList<Token>> filtro2;
+    private final ArrayList<AES> erroresSintacticos;
+    private final HashMap<String, Float> operacionesResultados;
+    private final ArrayList<ArrayList<Token>> operacionesValidas;
+    private final HashSet<Integer> lineasConErroresLexicos;
 
     public Sintactico() {
         this.filtro1 = new ArrayList<>();
@@ -34,13 +29,11 @@ public class Sintactico {
         this.lineasConErroresLexicos = new HashSet<>();
     }
 
-    /**
-     * Proceso principal de analisis
-     */
+    /* Proceso principal de analisis*/
     public void filtrarTokens(ArrayList<Token> tokensValidos, ArrayList<AER> erroresLexicos) {
-        System.out.println("\n=== INICIANDO ANÁLISIS ===");
+        System.out.println("\n---- INICIANDO ANÁLISIS ----");
 
-        // Registrar líneas con errores léxicos
+        /*Registrar lineas con errores */
         for (AER error : erroresLexicos) {
             lineasConErroresLexicos.add(error.getLN());
         }
@@ -56,12 +49,10 @@ public class Sintactico {
 
         imprimirErrores();
         imprimirResultados();
-        System.out.println("=== ANALISIS COMPLETADO ===\n");
+        System.out.println("---- ANALISIS COMPLETADO ----\n");
     }
 
-    /**
-     * Fase 1: Verificacion lexica basica
-     */
+    /*Fase 1: Verificacion lexica basica*/
     private void verificarLexico(ArrayList<Token> tokensLexicos) {
         for (Token token : tokensLexicos) {
             if (esTokenValido(token)) {
@@ -104,9 +95,7 @@ public class Sintactico {
                 operador.equals("INVERSO") || operador.equals("MOD");
     }
 
-    /**
-     * Fase 2: Analisis sintactico con validacion de estructura
-     */
+    /* Fase 2: Analisis sintactico con validacion de estructura*/
     private void verificarSintaxis(ArrayList<Token> tokens) {
         Stack<Token> pilaOperaciones = new Stack<>();
         Stack<Integer> contadorOperandos = new Stack<>();
@@ -161,11 +150,10 @@ public class Sintactico {
                     }
 
                     if (nivelAnidacion == 0) {
-                        // NUEVA VALIDACIÓN: Verificar si el bloque contiene líneas con errores léxicos
                         if (contieneErroresLexicos(bloqueActual)) {
                             hayError = true;
                             registrarErrorSintactico(
-                                    bloqueActual.get(0).getLinea(),
+                                    bloqueActual.getFirst().getLinea(),
                                     "Operacion",
                                     "Error lexico en operacion",
                                     "La operacion contiene tokens con errores lexicos"
@@ -187,9 +175,7 @@ public class Sintactico {
         procesarBloquePendiente(pilaOperaciones, bloqueActual);
     }
 
-    /**
-     * NUEVA FUNCIÓN: Verifica si un bloque de tokens contiene líneas con errores léxicos
-     */
+    /*Verifica si un bloque de tokens contiene lineas con errores lexicos */
     private boolean contieneErroresLexicos(ArrayList<Token> bloque) {
         for (Token token : bloque) {
             if (lineasConErroresLexicos.contains(token.getLinea())) {
@@ -309,9 +295,7 @@ public class Sintactico {
         return true;
     }
 
-    /**
-     * Fase 3: Analisis semantico y calculo de resultados
-     */
+    /* Fase 3: Analisis semantico y calculo de resultados*/
     private void verificarSemantica(ArrayList<ArrayList<Token>> operaciones) {
         for (ArrayList<Token> operacion : operaciones) {
             try {
@@ -324,7 +308,7 @@ public class Sintactico {
             } catch (ArithmeticException e) {
                 registrarErrorSemantico(operacion, e.getMessage());
             } catch (Exception e) {
-                int linea = operacion.isEmpty() ? 0 : operacion.get(0).getLinea();
+                int linea = operacion.isEmpty() ? 0 : operacion.getFirst().getLinea();
                 registrarErrorSintactico(linea, "Operacion",
                         "Error de procesamiento", "No se pudo procesar la operacion");
             }
@@ -353,7 +337,6 @@ public class Sintactico {
                     break;
             }
         }
-
         return expresion.toString().replaceAll(",\\)", ")");
     }
 
@@ -420,7 +403,7 @@ public class Sintactico {
             }
         }
 
-        if (operandoActual.length() > 0) {
+        if (!operandoActual.isEmpty()) {
             String op = operandoActual.toString().trim();
             operandos.add(calcularExpresion(op));
         }
@@ -434,7 +417,7 @@ public class Sintactico {
                 return operandos.stream().reduce(0f, Float::sum);
 
             case "sub":
-                float resultado = operandos.get(0);
+                float resultado = operandos.getFirst();
                 for (int i = 1; i < operandos.size(); i++) {
                     resultado -= operandos.get(i);
                 }
@@ -444,7 +427,7 @@ public class Sintactico {
                 return operandos.stream().reduce(1f, (a, b) -> a * b);
 
             case "div":
-                resultado = operandos.get(0);
+                resultado = operandos.getFirst();
                 for (int i = 1; i < operandos.size(); i++) {
                     if (operandos.get(i) == 0.0f) {
                         throw new ArithmeticException("Division por cero");
@@ -473,20 +456,20 @@ public class Sintactico {
 
                     return (float) Math.pow(radicando, 1.0f / indice);
                 } else {
-                    if (operandos.get(0) < 0) {
+                    if (operandos.getFirst() < 0) {
                         throw new ArithmeticException("Raiz cuadrada de numero negativo");
                     }
-                    return (float) Math.sqrt(operandos.get(0));
+                    return (float) Math.sqrt(operandos.getFirst());
                 }
 
             case "inv":
                 if (operandos.get(0) == 0.0f) {
                     throw new ArithmeticException("Inverso de cero");
                 }
-                return 1f / operandos.get(0);
+                return 1f / operandos.getFirst();
 
             case "mod":
-                resultado = operandos.get(0);
+                resultado = operandos.getFirst();
                 for (int i = 1; i < operandos.size(); i++) {
                     if (operandos.get(i) == 0.0f) {
                         throw new ArithmeticException("Modulo por cero");
@@ -500,16 +483,14 @@ public class Sintactico {
         }
     }
 
-    /**
-     * Gestion de errores
-     */
+    /* Gestion de errores */
     private void registrarErrorSintactico(int linea, String contenido, String tipo, String contexto) {
         erroresSintacticos.add(new AES(linea, contenido, tipo, contexto));
     }
 
     private void registrarErrorSemantico(ArrayList<Token> operacion, String mensaje) {
-        int linea = operacion.isEmpty() ? 0 : operacion.get(0).getLinea();
-        String tipo = "";
+        int linea = operacion.isEmpty() ? 0 : operacion.getFirst().getLinea();
+        String tipo;
 
         if (mensaje.contains("indice cero")) {
             tipo = "Raiz con indice cero es indefinida";
@@ -530,21 +511,19 @@ public class Sintactico {
         registrarErrorSintactico(linea, "Operacion", "Error semantico", tipo);
     }
 
-    /**
-     * Impresion de resultados
-     */
+    /*Impresion de resultados en consola*/
     private void imprimirErrores() {
-        System.out.println("\n========== ERRORES ENCONTRADOS ==========");
+        System.out.println("\n---------------- ERRORES ENCONTRADOS ----------------");
         if (erroresSintacticos.isEmpty()) {
             System.out.println("No se encontraron errores");
         } else {
             erroresSintacticos.forEach(System.out::println);
         }
-        System.out.println("=========================================\n");
+        System.out.println("---------------------------------------------------------");
     }
 
     private void imprimirResultados() {
-        System.out.println("\n========== RESULTADOS ==========");
+        System.out.println("\n---------------- RESULTADOS ----------------");
         if (operacionesResultados.isEmpty()) {
             System.out.println("No hay operaciones validas");
         } else {
@@ -552,10 +531,10 @@ public class Sintactico {
                     System.out.printf("Operacion: %s -> Resultado: %.2f%n", expr, res)
             );
         }
-        System.out.println("================================\n");
+        System.out.println("------------------------------------");
     }
 
-    // Getters
+    /*Getters*/
     public ArrayList<AES> getErroresSintacticos() {
         return erroresSintacticos;
     }

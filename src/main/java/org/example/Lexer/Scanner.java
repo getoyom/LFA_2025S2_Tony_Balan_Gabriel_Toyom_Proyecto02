@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Scanner {
-    private ArrayList<Token> tokensList;
-    private ArrayList<AER> errores;
+    private final ArrayList<Token> tokensList;
+    private final ArrayList<AER> errores;
 
     private int numeroLinea;
 
@@ -22,7 +22,7 @@ public class Scanner {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String lineaOriginal;
 
-            // Leer linea por linea del archivo
+           /*Leer linea por linea el archivo*/
             while ((lineaOriginal = reader.readLine()) != null) {
                 numeroLinea++;
                 procesarLinea(lineaOriginal);
@@ -45,20 +45,19 @@ public class Scanner {
         }
     }
 
-    // Procesa una linea completa del archivo y extrae todos los lexemas de esa
-    // linea
+    /* Procesa una linea extrayendo todos sus lexemas */
     private void procesarLinea(String linea) {
         if (linea == null || linea.trim().isEmpty()) {
             return;
         }
 
-        // Eliminar espacios en blanco excepto dentro de valores
+        /*Eliminar espacios en blanco excepto dentro de valores*/
         linea = linea.trim();
 
-        // Extraer todos los lexemas de esta linea
+        /*Extraer todos los lexemas de esta linea*/
         ArrayList<String> lexemas = extraerLexemas(linea);
 
-        // Analizar cada lexema
+        /*Analizar cada lexema*/
         for (String lexema : lexemas) {
             if (!lexema.isEmpty()) {
                 verificacionLineas(lexema);
@@ -75,7 +74,6 @@ public class Scanner {
             char c = linea.charAt(i);
 
             if (c == '<') {
-                // Si habia algo acumulado antes del <, guardarlo
                 if (!lexemaActual.isEmpty()) {
                     String temp = lexemaActual.toString().trim();
                     if (!temp.isEmpty()) {
@@ -89,14 +87,11 @@ public class Scanner {
 
             } else if (c == '>') {
                 lexemaActual.append(c);
-
-                // Termina la etiqueta
                 lexemas.add(lexemaActual.toString());
                 lexemaActual = new StringBuilder();
                 dentroEtiqueta = false;
 
             } else if (Character.isWhitespace(c) && !dentroEtiqueta) {
-                // Espacio fuera de etiqueta: separador de lexemas
                 if (!lexemaActual.isEmpty()) {
                     String temp = lexemaActual.toString().trim();
                     if (!temp.isEmpty()) {
@@ -109,8 +104,6 @@ public class Scanner {
                 lexemaActual.append(c);
             }
         }
-
-        // Agregar cualquier lexema pendiente
         if (!lexemaActual.isEmpty()) {
             String temp = lexemaActual.toString().trim();
             if (!temp.isEmpty()) {
@@ -126,14 +119,13 @@ public class Scanner {
         }
 
         if (lineaActual.startsWith("<") && lineaActual.endsWith(">")) {
-            // Agregar error en caso exista una etiqueta vacia
+            /*Agregar error en caso exista una etiqueta vacia*/
             if (lineaActual.length() <= 2) {
                 errores.add(new AER(numeroLinea, lineaActual, "Etiqueta vacia"));
                 return;
             }
 
             char[] actual = lineaActual.toCharArray();
-            // Verificar etiqueta de cierre vacia
             if (actual[1] == '/') {
                 if (lineaActual.length() <= 3) {
                     errores.add(new AER(numeroLinea, lineaActual, "Etiqueta de cierre vacia"));
@@ -152,7 +144,7 @@ public class Scanner {
     }
 
     private void verificarCierre(String lineaActual) {
-        // Limpiar linea actual para mejor analisis
+        /*Limpiar linea actual para mejor analisis*/
         String contenido = lineaActual.substring(2, lineaActual.length() - 1).trim();
 
         switch (contenido) {
@@ -165,24 +157,23 @@ public class Scanner {
     }
 
     private void verificarApertura(String lineaActual) {
-        // Limpiar linea actual para mejor analisis
+        /*Limpiar linea actual para mejor analisis*/
         String contenido = lineaActual.substring(1, lineaActual.length() - 1).trim();
 
         if (contenido.startsWith("Operacion=")) {
-            // Separar lexema Operacion= y el nombre de la operacion para analizar este
-            // ultimo
+            /*Separar lexema Operacion= y el nombre de la operacion para analizar este ultimo*/
             String[] partes = contenido.split("=", 2);
-            // Verificar que solo exista un signo =
+            /*Verificar que solo exista un signo =*/
             if (partes.length == 2) {
-                // Tomar el nombre de la operacion
+                /*Tomar el nombre de la operacion*/
                 String operacion = partes[1].trim();
 
                 if (verificarOperacion(operacion)) {
                     Token token = new Token(lineaActual, Token.Tokencitos.APERTURA_OPERACION, numeroLinea);
-                    // Configurar parametro extra para operaciones
+                    /*Configurar parametro extra para operaciones*/
                     token.setOperador(operacion);
                     tokensList.add(token);
-                    // Si la operacion es valida, todo el lexema es valido
+                    /*Si la operacion es valida, el lexema es valido*/
                     tokensList.add(new Token(operacion, Token.Tokencitos.NOMBRE_OPERACION, numeroLinea));
                 } else {
                     errores.add(new AER(numeroLinea, operacion, "Operador invalido"));
@@ -218,7 +209,7 @@ public class Scanner {
 
         int inicio = 0;
         if (str.charAt(0) == '-') {
-            // El string solo es una signo -
+            /*El string solo es una signo -*/
             if (str.length() == 1) {
                 return false;
             }
@@ -234,7 +225,7 @@ public class Scanner {
             if (Character.isDigit(c)) {
                 digitoEncontrado = true;
             } else if (c == '.') {
-                // Si previamente se encontro un punto
+                /*Si previamente se encontro un punto*/
                 if (puntoEncontrado) {
                     return false;
                 }
@@ -269,20 +260,13 @@ public class Scanner {
         System.out.println("-----------------------------------");
     }
 
-    // Getters and Setters
+    /*Getters*/
     public ArrayList<Token> getTokens() {
         return tokensList;
-    }
-
-    public void setTokens(ArrayList<Token> tokensList) {
-        this.tokensList = tokensList;
     }
 
     public ArrayList<AER> getErrores() {
         return errores;
     }
 
-    public void setErrores(ArrayList<AER> errores) {
-        this.errores = errores;
-    }
 }

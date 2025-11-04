@@ -9,25 +9,16 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * Clase encargada de generar archivos HTML con los resultados y errores del analisis
- */
 public class GeneradorHTML {
 
     private static final String ARCHIVO_RESULTADOS = "RESULTADOS_EQUIPO#3.html.html";
     private static final String ARCHIVO_ERRORES = "ERRORES_EQUIPO#3.html.html";
 
-    /**
-     * Genera el archivo HTML con los resultados de las operaciones validas
-     * @param operacionesValidas Lista de operaciones que fueron analizadas correctamente
-     * @param resultados Mapa con las expresiones y sus resultados numericos
-     */
     public void generarArchivoResultados(ArrayList<ArrayList<Token>> operacionesValidas,
                                          HashMap<String, Float> resultados) throws IOException {
 
         StringBuilder html = new StringBuilder();
 
-        // Encabezado HTML
         html.append("<!DOCTYPE html>\n");
         html.append("<html lang=\"es\">\n");
         html.append("<head>\n");
@@ -38,7 +29,6 @@ public class GeneradorHTML {
         html.append("</head>\n");
         html.append("<body>\n");
 
-        // Contenido principal
         html.append("    <div class=\"container\">\n");
         html.append("        <h1>Resultados de Operaciones Aritmeticas</h1>\n");
         html.append("        <div class=\"info-header\">\n");
@@ -51,7 +41,6 @@ public class GeneradorHTML {
             html.append("            <p>No se encontraron operaciones validas para procesar.</p>\n");
             html.append("        </div>\n");
         } else {
-            // Tabla de resultados
             html.append("        <table>\n");
             html.append("            <thead>\n");
             html.append("                <tr>\n");
@@ -85,21 +74,14 @@ public class GeneradorHTML {
         html.append("</body>\n");
         html.append("</html>\n");
 
-        // Escribir archivo
         escribirArchivo(ARCHIVO_RESULTADOS, html.toString());
     }
 
-    /**
-     * Genera el archivo HTML con los errores lexicos y sintacticos encontrados
-     * @param erroresLexicos Lista de errores encontrados en el analisis lexico
-     * @param erroresSintacticos Lista de errores encontrados en el analisis sintactico/semantico
-     */
     public void generarArchivoErrores(ArrayList<AER> erroresLexicos,
                                       ArrayList<AES> erroresSintacticos) throws IOException {
 
         StringBuilder html = new StringBuilder();
 
-        // Encabezado HTML
         html.append("<!DOCTYPE html>\n");
         html.append("<html lang=\"es\">\n");
         html.append("<head>\n");
@@ -110,7 +92,6 @@ public class GeneradorHTML {
         html.append("</head>\n");
         html.append("<body>\n");
 
-        // Contenido principal
         html.append("    <div class=\"container\">\n");
         html.append("        <h1>Errores Encontrados en el Analisis</h1>\n");
         html.append("        <div class=\"info-header\">\n");
@@ -118,7 +99,6 @@ public class GeneradorHTML {
         html.append("            <p><strong>Total de errores:</strong> ").append(erroresLexicos.size() + erroresSintacticos.size()).append("</p>\n");
         html.append("        </div>\n");
 
-        // Seccion de errores lexicos
         html.append("        <h2>Errores Lexicos</h2>\n");
 
         if (erroresLexicos.isEmpty()) {
@@ -151,7 +131,6 @@ public class GeneradorHTML {
             html.append("        </table>\n");
         }
 
-        // Seccion de errores sintacticos/semanticos
         html.append("        <h2>Errores Sintacticos y Semanticos</h2>\n");
 
         if (erroresSintacticos.isEmpty()) {
@@ -190,13 +169,9 @@ public class GeneradorHTML {
         html.append("</body>\n");
         html.append("</html>\n");
 
-        // Escribir archivo
         escribirArchivo(ARCHIVO_ERRORES, html.toString());
     }
 
-    /**
-     * Genera los estilos CSS para el archivo de resultados
-     */
     private String generarEstilosResultados() {
         return """
                     <style>
@@ -279,9 +254,6 @@ public class GeneradorHTML {
                 """;
     }
 
-    /**
-     * Genera los estilos CSS para el archivo de errores
-     */
     private String generarEstilosErrores() {
         return """
                     <style>
@@ -380,9 +352,6 @@ public class GeneradorHTML {
                 """;
     }
 
-    /**
-     * Construye una expresion legible a partir de los tokens de una operacion
-     */
     private String construirExpresionLegible(ArrayList<Token> operacion) {
         StringBuilder expresion = new StringBuilder();
 
@@ -402,15 +371,10 @@ public class GeneradorHTML {
             }
         }
 
-        // Limpiar comas finales antes de parentesis
         return expresion.toString().replaceAll(", \\)", ")");
     }
 
-    /**
-     * Busca el resultado de una operacion en el mapa de resultados
-     */
     private Float buscarResultado(HashMap<String, Float> resultados, ArrayList<Token> operacion) {
-        // Construir la expresion interna usada por el Sintactico
         StringBuilder expresion = new StringBuilder();
 
         for (Token token : operacion) {
@@ -434,43 +398,32 @@ public class GeneradorHTML {
         return resultados.get(expr);
     }
 
-    /**
-     * Convierte el nombre de operador a su forma interna
-     */
     private String nombreOperador(String operador) {
-        switch (operador) {
-            case "SUMA": return "sum";
-            case "RESTA": return "sub";
-            case "MULTIPLICACION": return "mul";
-            case "DIVISION": return "div";
-            case "POTENCIA": return "pow";
-            case "RAIZ": return "sqrt";
-            case "INVERSO": return "inv";
-            case "MOD": return "mod";
-            default: return operador.toLowerCase();
-        }
+        return switch (operador) {
+            case "SUMA" -> "sum";
+            case "RESTA" -> "sub";
+            case "MULTIPLICACION" -> "mul";
+            case "DIVISION" -> "div";
+            case "POTENCIA" -> "pow";
+            case "RAIZ" -> "sqrt";
+            case "INVERSO" -> "inv";
+            case "MOD" -> "mod";
+            default -> operador.toLowerCase();
+        };
     }
 
-    /**
-     * Formatea un resultado numerico para su presentacion
-     */
     private String formatearResultado(Float resultado) {
         if (resultado == null) {
             return "N/A";
         }
 
-        // Si es un numero entero, mostrarlo sin decimales
         if (resultado == resultado.intValue()) {
             return String.valueOf(resultado.intValue());
         }
 
-        // Mostrar con 4 decimales maximo
         return String.format("%.4f", resultado);
     }
 
-    /**
-     * Escapa caracteres especiales HTML para evitar problemas de renderizado
-     */
     private String escaparHTML(String texto) {
         if (texto == null) {
             return "";
@@ -482,17 +435,11 @@ public class GeneradorHTML {
                 .replace("'", "&#39;");
     }
 
-    /**
-     * Obtiene la fecha y hora actual formateada
-     */
     private String obtenerFechaActual() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return formatter.format(new Date());
     }
 
-    /**
-     * Escribe el contenido en un archivo
-     */
     private void escribirArchivo(String nombreArchivo, String contenido) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
             writer.write(contenido);

@@ -8,10 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
-/**
- * Clase encargada de generar un arbol de jerarquia visual de las operaciones aritmeticas
- * El arbol se representa como un grafico PNG que muestra la estructura de las operaciones
- */
 public class GeneradorArbol {
 
     private static final String ARCHIVO_SALIDA = "ArbolJerarquia.png";
@@ -26,13 +22,10 @@ public class GeneradorArbol {
     private static final Color COLOR_NUMERO = new Color(39, 174, 96);
     private static final Color COLOR_ESPECIAL = new Color(230, 126, 34);
 
-    private static final int TAMAÑO_FUENTE_NUMERO = 12;      // Aumentado
-    private static final int TAMAÑO_FUENTE_OPERACION = 14;   // Aumentado
-    private static final int TAMAÑO_FUENTE_ESPECIAL = 11;    // Aumentado
+    private static final int TAM_FUENTE_NUMERO = 12;      // Aumentado
+    private static final int TAM_FUENTE_OPERACION = 14;   // Aumentado
+    private static final int TAM_FUENTE_ESPECIAL = 11;    // Aumentado
 
-    /**
-     * Clase interna para almacenar información de un nodo del árbol
-     */
     private static class NodoArbol {
         String valor;
         String tipo;
@@ -51,15 +44,11 @@ public class GeneradorArbol {
         }
     }
 
-    /**
-     * Genera el árbol de jerarquía para todas las operaciones válidas
-     */
     public void generarArbolJerarquia(ArrayList<ArrayList<Token>> operacionesValidas) throws IOException {
         if (operacionesValidas.isEmpty()) {
             return;
         }
 
-        // Construir árboles para cada operación
         ArrayList<NodoArbol> arboles = new ArrayList<>();
         int numeroOperacion = 1;
         for (ArrayList<Token> operacion : operacionesValidas) {
@@ -71,14 +60,12 @@ public class GeneradorArbol {
             }
         }
 
-        // Calcular anchos reales para cada árbol
         for (NodoArbol arbol : arboles) {
             calcularAnchosReales(arbol);
         }
 
-        // Calcular dimensiones totales
         int anchoMaximo = 0;
-        int altoTotal = PADDING_VERTICAL;  // Padding inicial
+        int altoTotal = PADDING_VERTICAL;
 
         for (NodoArbol arbol : arboles) {
             int anchoArbol = arbol.anchoCalculado + PADDING_HORIZONTAL * 2;
@@ -87,26 +74,21 @@ public class GeneradorArbol {
             altoTotal += altoArbol + ESPACIO_ENTRE_ARBOLES;
         }
 
-        altoTotal += PADDING_VERTICAL;  // Padding final
+        altoTotal += PADDING_VERTICAL;
 
-        // Dimensiones mínimas más grandes
         anchoMaximo = Math.max(anchoMaximo, 1200);
         altoTotal = Math.max(altoTotal, 800);
 
-        // Crear imagen y dibujar árboles
         BufferedImage imagen = new BufferedImage(anchoMaximo, altoTotal, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = imagen.createGraphics();
 
-        // Configurar calidad de renderizado
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-        // Fondo blanco
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, anchoMaximo, altoTotal);
 
-        // Dibujar cada árbol
         int posicionYActual = PADDING_VERTICAL;
         for (NodoArbol arbol : arboles) {
             dibujarArbolOptimizado(g2d, arbol, anchoMaximo / 2, posicionYActual);
@@ -116,13 +98,9 @@ public class GeneradorArbol {
 
         g2d.dispose();
 
-        // Guardar imagen
         ImageIO.write(imagen, "PNG", new File(ARCHIVO_SALIDA));
     }
 
-    /**
-     * Construye el árbol de una operación a partir de sus tokens
-     */
     private NodoArbol construirArbolOperacion(ArrayList<Token> tokens) {
         if (tokens.isEmpty()) {
             return null;
@@ -146,9 +124,6 @@ public class GeneradorArbol {
         return raiz;
     }
 
-    /**
-     * Construye recursivamente el sub-árbol de una operación
-     */
     private int construirSubArbol(NodoArbol nodoActual, ArrayList<Token> tokens, int indice) {
         int nivel = 0;
         int i = indice;
@@ -214,9 +189,6 @@ public class GeneradorArbol {
         return i;
     }
 
-    /**
-     * Calcula los anchos reales que necesita cada subárbol
-     */
     private int calcularAnchosReales(NodoArbol nodo) {
         if (nodo.hijos.isEmpty()) {
             nodo.anchoCalculado = ANCHO_NODO;
@@ -228,18 +200,13 @@ public class GeneradorArbol {
             anchoTotal += calcularAnchosReales(hijo);
         }
 
-        // Agregar espacio entre hijos
         anchoTotal += (nodo.hijos.size() - 1) * ESPACIO_HORIZONTAL;
 
-        // El ancho del nodo es el máximo entre su ancho propio y el de sus hijos
         nodo.anchoCalculado = Math.max(ANCHO_NODO, anchoTotal);
 
         return nodo.anchoCalculado;
     }
 
-    /**
-     * Calcula la altura necesaria para dibujar el árbol
-     */
     private int calcularAltoArbol(NodoArbol nodo) {
         if (nodo.hijos.isEmpty()) {
             return 1;
@@ -254,66 +221,50 @@ public class GeneradorArbol {
         return alturaMaxima + 1;
     }
 
-    /**
-     * Dibuja el árbol de forma optimizada usando los anchos calculados
-     */
     private void dibujarArbolOptimizado(Graphics2D g2d, NodoArbol nodo, int x, int y) {
-        // Dibujar el nodo actual
         dibujarNodo(g2d, nodo, x, y);
 
-        // Dibujar hijos
         if (!nodo.hijos.isEmpty()) {
-            // Calcular el ancho total de los hijos
             int anchoTotalHijos = 0;
             for (NodoArbol hijo : nodo.hijos) {
                 anchoTotalHijos += hijo.anchoCalculado;
             }
             anchoTotalHijos += (nodo.hijos.size() - 1) * ESPACIO_HORIZONTAL;
 
-            // Posición inicial para el primer hijo
-            int inicioX = x - anchoTotalHijos / 2;
-            int posicionX = inicioX;
+            int posicionX = x - anchoTotalHijos / 2;
 
             for (NodoArbol hijo : nodo.hijos) {
-                // Calcular posición centrada del hijo en su espacio asignado
                 int hijoX = posicionX + hijo.anchoCalculado / 2;
                 int hijoY = y + ESPACIO_VERTICAL;
 
-                // Dibujar línea de conexión más gruesa
                 g2d.setColor(new Color(160, 160, 160));
                 g2d.setStroke(new BasicStroke(2.5f));
                 g2d.drawLine(x, y + ALTO_NODO / 2, hijoX, hijoY - ALTO_NODO / 2);
 
-                // Dibujar hijo recursivamente
                 dibujarArbolOptimizado(g2d, hijo, hijoX, hijoY);
 
-                // Avanzar a la siguiente posición
                 posicionX += hijo.anchoCalculado + ESPACIO_HORIZONTAL;
             }
         }
     }
 
-    /**
-     * Dibuja un nodo individual con su estilo correspondiente
-     */
     private void dibujarNodo(Graphics2D g2d, NodoArbol nodo, int x, int y) {
         int nodoCentroX = x - ANCHO_NODO / 2;
         int nodoCentroY = y - ALTO_NODO / 2;
 
-        // Determinar color según tipo
         Color colorFondo;
         switch (nodo.tipo) {
             case "operacion":
                 colorFondo = COLOR_OPERACION;
-                g2d.setFont(new Font("Arial", Font.BOLD, TAMAÑO_FUENTE_OPERACION));
+                g2d.setFont(new Font("Arial", Font.BOLD, TAM_FUENTE_OPERACION));
                 break;
             case "numero":
                 colorFondo = COLOR_NUMERO;
-                g2d.setFont(new Font("Arial", Font.BOLD, TAMAÑO_FUENTE_NUMERO));
+                g2d.setFont(new Font("Arial", Font.BOLD, TAM_FUENTE_NUMERO));
                 break;
             case "especial":
                 colorFondo = COLOR_ESPECIAL;
-                g2d.setFont(new Font("Arial", Font.BOLD, TAMAÑO_FUENTE_ESPECIAL));
+                g2d.setFont(new Font("Arial", Font.BOLD, TAM_FUENTE_ESPECIAL));
                 break;
             default:
                 colorFondo = new Color(149, 165, 166);
@@ -321,27 +272,22 @@ public class GeneradorArbol {
                 break;
         }
 
-        // Dibujar sombra más pronunciada
         g2d.setColor(new Color(0, 0, 0, 40));
         g2d.fillRoundRect(nodoCentroX + 4, nodoCentroY + 4, ANCHO_NODO, ALTO_NODO, 15, 15);
 
-        // Dibujar fondo del nodo
         g2d.setColor(colorFondo);
         g2d.fillRoundRect(nodoCentroX, nodoCentroY, ANCHO_NODO, ALTO_NODO, 15, 15);
 
-        // Dibujar borde más grueso
         g2d.setColor(colorFondo.darker());
         g2d.setStroke(new BasicStroke(2.5f));
         g2d.drawRoundRect(nodoCentroX, nodoCentroY, ANCHO_NODO, ALTO_NODO, 15, 15);
 
-        // Dibujar texto
         g2d.setColor(Color.WHITE);
         FontMetrics fm = g2d.getFontMetrics();
         String texto = nodo.valor;
 
-        // Truncar texto si es muy largo
         if (fm.stringWidth(texto) > ANCHO_NODO - 15) {
-            while (fm.stringWidth(texto + "...") > ANCHO_NODO - 15 && texto.length() > 0) {
+            while (fm.stringWidth(texto + "...") > ANCHO_NODO - 15 && !texto.isEmpty()) {
                 texto = texto.substring(0, texto.length() - 1);
             }
             texto += "...";

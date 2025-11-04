@@ -1,8 +1,8 @@
 package org.example.Lexer;
 
 public class Token {
-    private String valor;
-    private Tokencitos tipo;
+    private final String valor;
+    private final Tokencitos tipo;
     private int linea;
     private String operador;
 
@@ -11,7 +11,7 @@ public class Token {
         this.tipo = tipo;
         this.linea = linea;
     }
-
+    /*Diccionario de Tokens aceptados por el programa*/
     public enum Tokencitos {
         APERTURA_OPERACION,
         CIERRE_OPERACION,
@@ -38,12 +38,9 @@ public class Token {
         return sb.toString();
     }
 
-    // Getters y Setters
+    /* Getters y Setters*/
     public String getValor() { return valor; }
-    public void setValor(String valor) { this.valor = valor; }
-
     public Tokencitos getTokens() { return tipo; }
-    public void setTokens(Tokencitos tipo) { this.tipo = tipo; }
 
     public int getLinea() { return linea; }
     public void setLinea(int linea) { this.linea = linea; }

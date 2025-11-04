@@ -9,21 +9,19 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
-/**
- * Interfaz grafica principal del Analizador de Operaciones Aritmeticas
- * Proporciona funcionalidad para cargar, editar, analizar archivos y generar reportes
- */
+/*Interfaz grafica principal del Analizador de Operaciones Aritmeticas
+ Proporciona funcionalidad para cargar, editar, analizar archivos y generar reportes*/
 public class InterfazGrafica extends JFrame {
 
-    // Componentes principales
+    /*Componentes principales*/
     private JTextArea areaTexto;
     private File archivoActual;
 
-    // Modulos de analisis
+    /*Modulos de analisis*/
     private Scanner scanner;
     private Sintactico analizadorSintactico;
 
-    // Generadores de reportes
+    /*Generadores de reportes*/
     private GeneradorHTML generadorHTML;
     private GeneradorArbol generadorArbol;
 
@@ -32,9 +30,7 @@ public class InterfazGrafica extends JFrame {
     private static final int ANCHO_VENTANA = 900;
     private static final int ALTO_VENTANA = 700;
 
-    /**
-     * Constructor principal de la interfaz grafica
-     */
+    /* Constructor principal de la interfaz grafica */
     public InterfazGrafica() {
         inicializarComponentes();
         configurarVentana();
@@ -44,9 +40,7 @@ public class InterfazGrafica extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Inicializa los componentes y modulos del analizador
-     */
+    /* Inicializa los componentes y modulos del analizador */
     private void inicializarComponentes() {
         scanner = new Scanner();
         analizadorSintactico = new Sintactico();
@@ -55,31 +49,20 @@ public class InterfazGrafica extends JFrame {
         archivoActual = null;
     }
 
-    /**
-     * Configura las propiedades principales de la ventana
-     */
+    /*Configura las propiedades principales de la ventana*/
     private void configurarVentana() {
         setTitle(TITULO_APLICACION);
         setSize(ANCHO_VENTANA, ALTO_VENTANA);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-
-        // Icono de la aplicacion (opcional)
-        try {
-            setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
-        } catch (Exception e) {
-            // Continuar sin icono si no existe
-        }
     }
 
-    /**
-     * Crea la barra de menu con todas las opciones disponibles
-     */
+    /*Crea la barra de menu con todas las opciones disponibles*/
     private void crearMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        // Menu Archivo
+        /*Menu Archivo*/
         JMenu menuArchivo = new JMenu("Archivo");
         menuArchivo.setMnemonic(KeyEvent.VK_A);
 
@@ -105,7 +88,7 @@ public class InterfazGrafica extends JFrame {
         menuArchivo.addSeparator();
         menuArchivo.add(itemSalir);
 
-        // Menu Analisis
+        /* Menu Analisis*/
         JMenu menuAnalisis = new JMenu("Analisis");
         menuAnalisis.setMnemonic(KeyEvent.VK_N);
 
@@ -115,25 +98,22 @@ public class InterfazGrafica extends JFrame {
 
         menuAnalisis.add(itemAnalizar);
 
-        // Menu Ayuda
+        /*Menu Ayuda*/
         JMenu menuAyuda = new JMenu("Ayuda");
         menuAyuda.setMnemonic(KeyEvent.VK_Y);
 
         JMenuItem itemManualUsuario = crearMenuItem("Manual de Usuario", KeyEvent.VK_U, null);
-        itemManualUsuario.addActionListener(e -> abrirManual("ManualUsuario.pdf"));
+        itemManualUsuario.addActionListener(e -> abrirManual("Manual de Usuario.pdf"));
 
         JMenuItem itemManualTecnico = crearMenuItem("Manual Tecnico", KeyEvent.VK_T, null);
         itemManualTecnico.addActionListener(e -> abrirManual("ManualTecnico.pdf"));
-
-
-
 
         menuAyuda.add(itemManualUsuario);
         menuAyuda.add(itemManualTecnico);
         menuAyuda.addSeparator();
 
 
-        // Agregar menus a la barra
+        /*Agregar menus a la barra*/
         menuBar.add(menuArchivo);
         menuBar.add(menuAnalisis);
         menuBar.add(menuAyuda);
@@ -141,9 +121,7 @@ public class InterfazGrafica extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    /**
-     * Crea un item de menu con sus propiedades
-     */
+    /*Crea un item de menu con sus propiedades*/
     private JMenuItem crearMenuItem(String texto, int mnemonic, KeyStroke acelerador) {
         JMenuItem item = new JMenuItem(texto);
         item.setMnemonic(mnemonic);
@@ -153,23 +131,21 @@ public class InterfazGrafica extends JFrame {
         return item;
     }
 
-    /**
-     * Crea el area de texto principal con numeracion de lineas
-     */
+    /*Crea el area de texto principal con numeracion de lineas*/
     private void crearAreaTexto() {
         areaTexto = new JTextArea();
         areaTexto.setFont(new Font("Monospaced", Font.PLAIN, 14));
         areaTexto.setTabSize(4);
         areaTexto.setLineWrap(false);
 
-        // Panel con numeracion de lineas
+        /*Panel con numeracion de lineas*/
         JTextArea numeracionLineas = new JTextArea("1");
         numeracionLineas.setFont(new Font("Monospaced", Font.PLAIN, 14));
         numeracionLineas.setBackground(new Color(240, 240, 240));
         numeracionLineas.setEditable(false);
         numeracionLineas.setFocusable(false);
 
-        // Actualizar numeracion al escribir
+        /*Actualizar numeracion al escribir*/
         areaTexto.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             public void changedUpdate(javax.swing.event.DocumentEvent e) { actualizarNumeracion(); }
             public void insertUpdate(javax.swing.event.DocumentEvent e) { actualizarNumeracion(); }
@@ -192,9 +168,7 @@ public class InterfazGrafica extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    /**
-     * Abre un archivo y carga su contenido en el area de texto
-     */
+    /*Abre un archivo y carga su contenido en el area de texto*/
     private void abrirArchivo() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto (*.txt)", "txt"));
@@ -209,9 +183,7 @@ public class InterfazGrafica extends JFrame {
         }
     }
 
-    /**
-     * Carga el contenido de un archivo en el area de texto
-     */
+    /*Carga el contenido de un archivo en el area de texto*/
     private void cargarContenidoArchivo(File archivo) {
         try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
             areaTexto.setText("");
@@ -225,9 +197,7 @@ public class InterfazGrafica extends JFrame {
         }
     }
 
-    /**
-     * Guarda el contenido actual en el archivo
-     */
+    /*Guarda el contenido actual en el archivo*/
     private void guardarArchivo() {
         if (archivoActual == null) {
             guardarArchivoComo();
@@ -236,9 +206,7 @@ public class InterfazGrafica extends JFrame {
         }
     }
 
-    /**
-     * Guarda el contenido con un nuevo nombre de archivo
-     */
+    /* Guarda el contenido con un nuevo nombre de archivo*/
     private void guardarArchivoComo() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto (*.txt)", "txt"));
@@ -263,9 +231,7 @@ public class InterfazGrafica extends JFrame {
         }
     }
 
-    /**
-     * Guarda el contenido del area de texto en un archivo
-     */
+    /*Guarda el contenido del area de texto en un archivo*/
     private void guardarContenidoArchivo(File archivo) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
             writer.write(areaTexto.getText());
@@ -278,16 +244,14 @@ public class InterfazGrafica extends JFrame {
         }
     }
 
-    /**
-     * Analiza el texto actual y genera los reportes
-     */
+    /*Analiza el texto actual y genera los reportes*/
     private void analizarTexto() {
         if (areaTexto.getText().trim().isEmpty()) {
             mostrarError("No hay texto para analizar");
             return;
         }
 
-        // Guardar contenido temporal para analisis
+        /*Guardar contenido temporal para analisis*/
         File archivoTemporal = new File("temp_analisis.txt");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoTemporal))) {
             writer.write(areaTexto.getText());
@@ -296,25 +260,18 @@ public class InterfazGrafica extends JFrame {
             return;
         }
 
-        // Mostrar dialogo de progreso
+        /*Mostrar dialogo de progreso*/
         JDialog dialogoProgreso = crearDialogoProgreso();
 
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() {
-                // Reiniciar analizadores
+                /*Reiniciar los analizadores*/
                 scanner = new Scanner();
                 analizadorSintactico = new Sintactico();
-
-                // Realizar analisis lexico
                 scanner.scanFile(archivoTemporal.getAbsolutePath());
-
-                // Realizar analisis sintactico y semantico
                 analizadorSintactico.filtrarTokens(scanner.getTokens(), scanner.getErrores());
-
-                // Generar archivos de salida
                 generarArchivosReporte();
-
                 return null;
             }
 
@@ -324,7 +281,7 @@ public class InterfazGrafica extends JFrame {
                 archivoTemporal.delete();
 
                 try {
-                    get(); // Verifica si hubo excepciones
+                    get(); /*Verifica si hubo excepciones*/
                     mostrarResultadosAnalisis();
                 } catch (Exception e) {
                     mostrarError("Error durante el analisis: " + e.getMessage());
@@ -336,9 +293,7 @@ public class InterfazGrafica extends JFrame {
         dialogoProgreso.setVisible(true);
     }
 
-    /**
-     * Crea un dialogo de progreso para el analisis
-     */
+    /*Crea un dialogo de progreso para el analisis*/
     private JDialog crearDialogoProgreso() {
         JDialog dialogo = new JDialog(this, "Analizando...", true);
         dialogo.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -361,24 +316,18 @@ public class InterfazGrafica extends JFrame {
         return dialogo;
     }
 
-    /**
-     * Genera los archivos de reporte HTML y el arbol de jerarquia
-     */
+    /*Genera los archivos de reporte HTML y el arbol de jerarquia*/
     private void generarArchivosReporte() {
         try {
-            // Generar HTML de resultados
             generadorHTML.generarArchivoResultados(
                     analizadorSintactico.getOperacionesValidas(),
                     analizadorSintactico.getResultados()
             );
-
-            // Generar HTML de errores
             generadorHTML.generarArchivoErrores(
                     scanner.getErrores(),
                     analizadorSintactico.getErroresSintacticos()
             );
 
-            // Generar arbol de jerarquia
             if (!analizadorSintactico.getOperacionesValidas().isEmpty()) {
                 generadorArbol.generarArbolJerarquia(
                         analizadorSintactico.getOperacionesValidas()
@@ -390,9 +339,7 @@ public class InterfazGrafica extends JFrame {
         }
     }
 
-    /**
-     * Muestra un resumen de los resultados del analisis
-     */
+    /*Muestra un resumen de los resultados del analisis */
     private void mostrarResultadosAnalisis() {
         int totalTokens = scanner.getTokens().size();
         int erroresLexicos = scanner.getErrores().size();
@@ -400,7 +347,7 @@ public class InterfazGrafica extends JFrame {
         int operacionesValidas = analizadorSintactico.getOperacionesValidas().size();
 
         StringBuilder mensaje = new StringBuilder();
-        mensaje.append("=== ANALISIS COMPLETADO ===\n\n");
+        mensaje.append("----ANALISIS COMPLETADO----\n\n");
         mensaje.append("Tokens reconocidos: ").append(totalTokens).append("\n");
         mensaje.append("Errores lexicos: ").append(erroresLexicos).append("\n");
         mensaje.append("Errores sintacticos/semanticos: ").append(erroresSintacticos).append("\n");
@@ -419,9 +366,7 @@ public class InterfazGrafica extends JFrame {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /**
-     * Abre un archivo PDF de manual
-     */
+    /*Abre un archivo PDF de manual*/
     private void abrirManual(String nombreArchivo) {
         File manual = new File(nombreArchivo);
 
@@ -441,11 +386,7 @@ public class InterfazGrafica extends JFrame {
         }
     }
 
-
-
-    /**
-     * Muestra un dialogo de error
-     */
+    /*Muestra un dialogo de error*/
     private void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this,
                 mensaje,
@@ -453,9 +394,7 @@ public class InterfazGrafica extends JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
 
-    /**
-     * Cierra la aplicacion con confirmacion
-     */
+    /*Cierra la aplicacion con confirmacion*/
     private void salirAplicacion() {
         int opcion = JOptionPane.showConfirmDialog(this,
                 "¿Desea salir de la aplicacion?",

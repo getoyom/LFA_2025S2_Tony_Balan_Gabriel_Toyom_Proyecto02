@@ -102,17 +102,108 @@
     <div class="container">
         <h1>Errores Encontrados en el Analisis</h1>
         <div class="info-header">
-            <p><strong>Fecha:</strong> 03/11/2025 09:00:09</p>
-            <p><strong>Total de errores:</strong> 0</p>
+            <p><strong>Fecha:</strong> 03/11/2025 21:33:23</p>
+            <p><strong>Total de errores:</strong> 11</p>
         </div>
         <h2>Errores Lexicos</h2>
-        <div class="no-errors">
-            <p>No se encontraron errores lexicos.</p>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Linea</th>
+                    <th>Lexema</th>
+                    <th>Descripcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="error-lexico">
+                    <td>1</td>
+                    <td>3</td>
+                    <td><code>7;8</code></td>
+                    <td>Lexema no reconocido</td>
+                </tr>
+                <tr class="error-lexico">
+                    <td>2</td>
+                    <td>8</td>
+                    <td><code>50#</code></td>
+                    <td>Lexema no reconocido</td>
+                </tr>
+                <tr class="error-lexico">
+                    <td>3</td>
+                    <td>16</td>
+                    <td><code>3@</code></td>
+                    <td>Lexema no reconocido</td>
+                </tr>
+                <tr class="error-lexico">
+                    <td>4</td>
+                    <td>19</td>
+                    <td><code>DIVISIONx</code></td>
+                    <td>Operador invalido</td>
+                </tr>
+                <tr class="error-lexico">
+                    <td>5</td>
+                    <td>25</td>
+                    <td><code>3:</code></td>
+                    <td>Lexema no reconocido</td>
+                </tr>
+            </tbody>
+        </table>
         <h2>Errores Sintacticos y Semanticos</h2>
-        <div class="no-errors">
-            <p>No se encontraron errores sintacticos o semanticos.</p>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Linea</th>
+                    <th>Tipo</th>
+                    <th>Contenido</th>
+                    <th>Contexto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="error-sintactico">
+                    <td>1</td>
+                    <td>1</td>
+                    <td>Error lexico en operacion</td>
+                    <td><code>Operacion</code></td>
+                    <td>La operacion contiene tokens con errores lexicos</td>
+                </tr>
+                <tr class="error-sintactico">
+                    <td>2</td>
+                    <td>7</td>
+                    <td>Error lexico en operacion</td>
+                    <td><code>Operacion</code></td>
+                    <td>La operacion contiene tokens con errores lexicos</td>
+                </tr>
+                <tr class="error-sintactico">
+                    <td>3</td>
+                    <td>13</td>
+                    <td>Error lexico en operacion</td>
+                    <td><code>Operacion</code></td>
+                    <td>La operacion contiene tokens con errores lexicos</td>
+                </tr>
+                <tr class="error-sintactico">
+                    <td>4</td>
+                    <td>22</td>
+                    <td>Error de sintaxis</td>
+                    <td><code>&lt;/Operacion&gt;</code></td>
+                    <td>Cierre sin apertura correspondiente</td>
+                </tr>
+                <tr class="error-sintactico">
+                    <td>5</td>
+                    <td>24</td>
+                    <td>Error semantico</td>
+                    <td><code>&lt;Operacion= POTENCIA&gt;</code></td>
+                    <td>POTENCIA requiere al menos 2 operando(s), encontrados: 1</td>
+                </tr>
+                <tr class="error-sintactico">
+                    <td>6</td>
+                    <td>24</td>
+                    <td>Error lexico en operacion</td>
+                    <td><code>Operacion</code></td>
+                    <td>La operacion contiene tokens con errores lexicos</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
